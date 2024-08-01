@@ -209,6 +209,7 @@
             Controls.Add(panelTitle);
             Controls.Add(panelNavMenu);
             Name = "FormMain";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "FormMain";
             Load += FormMain_Load;
             panelNavMenu.ResumeLayout(false);

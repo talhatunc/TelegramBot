@@ -30,10 +30,6 @@
         {
             listBoxLog = new ListBox();
             dataGridViewContact = new DataGridView();
-            FullName = new DataGridViewTextBoxColumn();
-            UserName = new DataGridViewTextBoxColumn();
-            chatId = new DataGridViewTextBoxColumn();
-            userId = new DataGridViewTextBoxColumn();
             lblUser = new Label();
             pictureBoxPP = new FontAwesome.Sharp.IconPictureBox();
             ((System.ComponentModel.ISupportInitialize)dataGridViewContact).BeginInit();
@@ -57,8 +53,9 @@
             dataGridViewContact.AllowUserToResizeRows = false;
             dataGridViewContact.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewContact.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridViewContact.BackgroundColor = Color.FromArgb(24, 30, 54);
+            dataGridViewContact.BorderStyle = BorderStyle.None;
             dataGridViewContact.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewContact.Columns.AddRange(new DataGridViewColumn[] { FullName, UserName, chatId, userId });
             dataGridViewContact.Location = new Point(14, 12);
             dataGridViewContact.MultiSelect = false;
             dataGridViewContact.Name = "dataGridViewContact";
@@ -69,32 +66,6 @@
             dataGridViewContact.Size = new Size(240, 478);
             dataGridViewContact.TabIndex = 5;
             dataGridViewContact.CellClick += dataGridViewContact_CellClick;
-            // 
-            // FullName
-            // 
-            FullName.HeaderText = "Full Name";
-            FullName.Name = "FullName";
-            FullName.ReadOnly = true;
-            // 
-            // UserName
-            // 
-            UserName.HeaderText = "User Name";
-            UserName.Name = "UserName";
-            UserName.ReadOnly = true;
-            // 
-            // chatId
-            // 
-            chatId.HeaderText = "chatId";
-            chatId.Name = "chatId";
-            chatId.ReadOnly = true;
-            chatId.Visible = false;
-            // 
-            // userId
-            // 
-            userId.HeaderText = "userId";
-            userId.Name = "userId";
-            userId.ReadOnly = true;
-            userId.Visible = false;
             // 
             // lblUser
             // 
@@ -144,10 +115,6 @@
 
         private ListBox listBoxLog;
         private DataGridView dataGridViewContact;
-        private DataGridViewTextBoxColumn FullName;
-        private DataGridViewTextBoxColumn UserName;
-        private DataGridViewTextBoxColumn chatId;
-        private DataGridViewTextBoxColumn userId;
         private Label lblUser;
         private FontAwesome.Sharp.IconPictureBox pictureBoxPP;
     }

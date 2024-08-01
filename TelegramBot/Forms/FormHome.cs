@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,18 +14,48 @@ namespace TelegramBot.Forms
 {
     public partial class FormHome : UserControl
     {
+        private string commandsFilePath = @"Commands/commands.json";
+        private Dictionary<string, string> commandsDictionary = new Dictionary<string, string>();
         private static readonly string Token = "7479958953:AAEmY5KqoOKwNF6Z2ofog-aypSxME5NeIKk";
         private TelegramBotClient Bot;
         public FormHome()
         {
             InitializeComponent();
+            InitializeDataGridView();
         }
 
         private void FormHome_Load(object sender, EventArgs e)
         {
             Bot = new TelegramBotClient(Token);
+            LoadCommandsFromFile();
             Bot.OnMessage += BotClient_OnMessage;
             Bot.StartReceiving();
+        }
+
+        private void LoadCommandsFromFile()
+        {
+            if (File.Exists(commandsFilePath))
+            {
+                string json = File.ReadAllText(commandsFilePath);
+                var commandList = JsonConvert.DeserializeObject<List<Command>>(json) ?? new List<Command>();
+
+                commandsDictionary = new Dictionary<string, string>();
+                foreach (var cmd in commandList)
+                {
+                    commandsDictionary[cmd.CommandText] = cmd.ReplyText;
+                }
+            }
+        }
+
+        private void InitializeDataGridView()
+        {
+            dataGridViewContact.Columns.Add("FullName", "Full Name");
+            dataGridViewContact.Columns.Add("UserName", "User Name");
+            dataGridViewContact.Columns.Add("ChatId", "Chat ID");
+            dataGridViewContact.Columns.Add("UserId", "User ID");
+
+            dataGridViewContact.Columns["ChatId"].Visible = false;
+            dataGridViewContact.Columns["UserId"].Visible = false;
         }
 
         private void BotClient_OnMessage(object sender, Telegram.Bot.Args.MessageEventArgs e)
@@ -36,13 +67,21 @@ namespace TelegramBot.Forms
             long chatId = e.Message.Chat.Id;
             long userId = e.Message.From.Id;
             AddLogMessage($"Recieved Message: {e.Message.Date.ToShortTimeString()} - {userName}: {message}");
+            AddRowToDataGridView(firstName, lastName, userName, chatId, userId);
             switch (message)
             {
                 case "/start":
-                    AddRowToDataGridView(firstName, lastName, userName, chatId, userId);
                     SendMessageAsync(userId, "Welcome");
                     break;
                 default:
+                    if (commandsDictionary.TryGetValue(message, out string reply))
+                    {
+                        SendMessageAsync(userId, reply);
+                    }
+                    else
+                    {
+                        SendMessageAsync(userId, "Unknown command");
+                    }
                     break;
             }
         }

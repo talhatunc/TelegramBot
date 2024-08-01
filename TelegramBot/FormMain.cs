@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using TelegramBot.Forms;
 
 namespace TelegramBot
 {
@@ -29,6 +30,7 @@ namespace TelegramBot
             );
         private UserControl activeForm = null;
         private Panel leftBorderBtn;
+        private UserControl formHome = new Forms.FormHome();
         public FormMain()
         {
             leftBorderBtn = new Panel();
@@ -38,6 +40,8 @@ namespace TelegramBot
             leftBorderBtn.BackColor = Color.FromArgb(0, 126, 249);
             Controls.Add(leftBorderBtn);
             InitializeComponent();
+            this.panelScreen.Controls.Add(formHome);
+            formHome.Hide();
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -49,16 +53,27 @@ namespace TelegramBot
         }
         public void OpenChildForm(UserControl childForm)
         {
+            formHome.Hide();
+            CloseActiveForm();
             activeForm = childForm;
-            childForm.Dock = DockStyle.Fill;
-            this.panelScreen.Controls.Add(childForm);
-            this.panelScreen.Tag = childForm;
-            childForm.BringToFront();
-            childForm.Show();
+            this.panelScreen.Controls.Add(activeForm);
+            activeForm.Show();
         }
+
+        private void CloseActiveForm()
+        {
+            if (activeForm != null)
+            {
+                this.Controls.Remove(activeForm);
+                activeForm.Dispose();
+                activeForm = null;
+            }
+        }
+
         private void btnHome_Click(object sender, EventArgs e)
         {
-            OpenChildForm(new Forms.FormHome());
+            CloseActiveForm();
+            formHome.Show();
             leftBorderBtn.Height = btnHome.Height;
             leftBorderBtn.Top = btnHome.Top;
             leftBorderBtn.Left = btnHome.Left;
@@ -68,6 +83,7 @@ namespace TelegramBot
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
+            UserControl childForm = new Forms.FormHome();
             leftBorderBtn.Height = btnSettings.Height;
             leftBorderBtn.Top = btnSettings.Top;
             leftBorderBtn.Left = btnSettings.Left;
@@ -108,6 +124,8 @@ namespace TelegramBot
 
         private void btnCommands_Click(object sender, EventArgs e)
         {
+            UserControl childForm = new Forms.FormCommands();
+            OpenChildForm(childForm);
             leftBorderBtn.Height = btnCommands.Height;
             leftBorderBtn.Top = btnCommands.Top;
             leftBorderBtn.Left = btnCommands.Left;
