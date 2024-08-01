@@ -1,23 +1,26 @@
-using Telegram.Bot;
-using System;
-using Telegram.Bot.Types.ReplyMarkups;
-using Newtonsoft.Json.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using Telegram.Bot;
 
-
-namespace TelegramBot
+namespace TelegramBot.Forms
 {
-    public partial class Form1 : Form
+    public partial class FormHome : UserControl
     {
         private static readonly string Token = "7479958953:AAEmY5KqoOKwNF6Z2ofog-aypSxME5NeIKk";
         private TelegramBotClient Bot;
-
-        public Form1()
+        public FormHome()
         {
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void FormHome_Load(object sender, EventArgs e)
         {
             Bot = new TelegramBotClient(Token);
             Bot.OnMessage += BotClient_OnMessage;
@@ -32,7 +35,7 @@ namespace TelegramBot
             string userName = e.Message.From.Username ?? string.Empty;
             long chatId = e.Message.Chat.Id;
             long userId = e.Message.From.Id;
-            AddLogMessage($"{e.Message.Date.ToShortTimeString()} - {userName}: {message}");
+            AddLogMessage($"Recieved Message: {e.Message.Date.ToShortTimeString()} - {userName}: {message}");
             switch (message)
             {
                 case "/start":
@@ -43,7 +46,6 @@ namespace TelegramBot
                     break;
             }
         }
-
         private async Task SendMessageAsync(long chatId, string text)
         {
             try
@@ -131,7 +133,6 @@ namespace TelegramBot
                 }
             }
         }
-
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
