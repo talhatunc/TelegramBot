@@ -9,7 +9,7 @@ namespace TelegramBot
 {
     public partial class Form1 : Form
     {
-        private static readonly string Token = "";
+        private static readonly string Token = "7479958953:AAEmY5KqoOKwNF6Z2ofog-aypSxME5NeIKk";
         private TelegramBotClient Bot;
 
         public Form1()
@@ -26,23 +26,49 @@ namespace TelegramBot
 
         private void BotClient_OnMessage(object sender, Telegram.Bot.Args.MessageEventArgs e)
         {
-            var id = e.Message.From.Id;
-            var test = e.Message.Text.ToString();
-            var firstName = e.Message.From.FirstName ?? string.Empty;
-            var lastName = e.Message.From.LastName ?? string.Empty;
-            var userName = e.Message.From.Username ?? string.Empty;
-            var chatId = e.Message.Chat.Id;
-            var userId = e.Message.From.Id;
-            AddRowToDataGridView(firstName, lastName, userName, chatId, userId);
-            switch (test)
+            string message = e.Message.Text.ToString();
+            string firstName = e.Message.From.FirstName ?? string.Empty;
+            string lastName = e.Message.From.LastName ?? string.Empty;
+            string userName = e.Message.From.Username ?? string.Empty;
+            long chatId = e.Message.Chat.Id;
+            long userId = e.Message.From.Id;
+            AddLogMessage($"{e.Message.Date.ToShortTimeString()} - {userName}: {message}");
+            switch (message)
             {
-                case "Hello":
-                    Bot.SendTextMessageAsync(id, "oldu");
+                case "/start":
+                    AddRowToDataGridView(firstName, lastName, userName, chatId, userId);
+                    SendMessageAsync(userId, "Welcome");
                     break;
-                case "H": break;
+                default:
+                    break;
             }
         }
 
+        private async Task SendMessageAsync(long chatId, string text)
+        {
+            try
+            {
+                var sentMessage = await Bot.SendTextMessageAsync(chatId, text);
+
+                AddLogMessage($"Sent Message: {sentMessage.Date.ToShortTimeString()} - {sentMessage.From.Username}: {sentMessage.Text}");
+            }
+            catch (Exception ex)
+            {
+                AddLogMessage($"Error sending message: {ex.Message}");
+            }
+        }
+
+        private void AddLogMessage(string message)
+        {
+            if (listBoxLog.InvokeRequired)
+            {
+                listBoxLog.Invoke(new Action(() => AddLogMessage(message)));
+            }
+            else
+            {
+                listBoxLog.Items.Add(message);
+            }
+        }
 
         private void AddRowToDataGridView(string firstName, string lastName, string userName, long chatId, long userId)
         {
@@ -63,18 +89,15 @@ namespace TelegramBot
             }
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Bot.StopReceiving();
-        }
-
         private async void dataGridViewContact_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
-                var userId = dataGridViewContact.Rows[e.RowIndex].Cells["UserId"].Value;
+                var userId = dataGridViewContact.Rows[e.RowIndex].Cells["userId"].Value;
+                var chatId = dataGridViewContact.Rows[e.RowIndex].Cells["chatId"].Value;
                 if (userId != null)
                 {
+                    lblUser.Text = dataGridViewContact.Rows[e.RowIndex].Cells["FullName"].Value.ToString();
                     var profilePictureUrl = await GetProfilePictureUrlAsync((long)userId);
                     if (!string.IsNullOrEmpty(profilePictureUrl))
                     {
@@ -107,6 +130,12 @@ namespace TelegramBot
                     pictureBoxPP.Image = Image.FromStream(ms);
                 }
             }
+        }
+
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Bot.StopReceiving();
         }
     }
 }
