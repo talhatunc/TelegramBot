@@ -51,6 +51,7 @@ namespace TelegramBot
             );
             this.FormBorderStyle = FormBorderStyle.None;
         }
+
         public void OpenChildForm(UserControl childForm)
         {
             formHome.Hide();
@@ -135,6 +136,8 @@ namespace TelegramBot
 
         private void btnConfig_Click(object sender, EventArgs e)
         {
+            UserControl childForm = new Forms.FormConfiguration();
+            OpenChildForm(childForm);
             leftBorderBtn.Height = btnConfig.Height;
             leftBorderBtn.Top = btnConfig.Top;
             leftBorderBtn.Left = btnConfig.Left;

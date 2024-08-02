@@ -32,6 +32,7 @@
             dataGridViewContact = new DataGridView();
             lblUser = new Label();
             pictureBoxPP = new FontAwesome.Sharp.IconPictureBox();
+            btnStartListening = new FontAwesome.Sharp.IconButton();
             ((System.ComponentModel.ISupportInitialize)dataGridViewContact).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxPP).BeginInit();
             SuspendLayout();
@@ -42,7 +43,7 @@
             listBoxLog.ItemHeight = 15;
             listBoxLog.Location = new Point(260, 64);
             listBoxLog.Name = "listBoxLog";
-            listBoxLog.Size = new Size(599, 424);
+            listBoxLog.Size = new Size(599, 394);
             listBoxLog.TabIndex = 7;
             // 
             // dataGridViewContact
@@ -63,7 +64,7 @@
             dataGridViewContact.RowHeadersVisible = false;
             dataGridViewContact.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             dataGridViewContact.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewContact.Size = new Size(240, 478);
+            dataGridViewContact.Size = new Size(240, 446);
             dataGridViewContact.TabIndex = 5;
             dataGridViewContact.CellClick += dataGridViewContact_CellClick;
             // 
@@ -72,7 +73,7 @@
             lblUser.AutoSize = true;
             lblUser.Font = new Font("Segoe UI Semibold", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 162);
             lblUser.ForeColor = Color.FromArgb(0, 126, 249);
-            lblUser.Location = new Point(313, 33);
+            lblUser.Location = new Point(313, 22);
             lblUser.Name = "lblUser";
             lblUser.Size = new Size(96, 25);
             lblUser.TabIndex = 8;
@@ -93,18 +94,37 @@
             pictureBoxPP.TabIndex = 6;
             pictureBoxPP.TabStop = false;
             // 
+            // btnStartListening
+            // 
+            btnStartListening.FlatStyle = FlatStyle.Flat;
+            btnStartListening.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnStartListening.ForeColor = Color.FromArgb(0, 126, 249);
+            btnStartListening.IconChar = FontAwesome.Sharp.IconChar.Play;
+            btnStartListening.IconColor = Color.FromArgb(0, 126, 249);
+            btnStartListening.IconFont = FontAwesome.Sharp.IconFont.Solid;
+            btnStartListening.IconSize = 16;
+            btnStartListening.Location = new Point(780, 464);
+            btnStartListening.Name = "btnStartListening";
+            btnStartListening.Size = new Size(79, 23);
+            btnStartListening.TabIndex = 9;
+            btnStartListening.Text = "Start";
+            btnStartListening.TextAlign = ContentAlignment.MiddleLeft;
+            btnStartListening.TextImageRelation = TextImageRelation.ImageBeforeText;
+            btnStartListening.UseVisualStyleBackColor = true;
+            btnStartListening.Click += btnStartListening_Click;
+            // 
             // FormHome
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Transparent;
+            Controls.Add(btnStartListening);
             Controls.Add(listBoxLog);
             Controls.Add(dataGridViewContact);
             Controls.Add(lblUser);
             Controls.Add(pictureBoxPP);
             Name = "FormHome";
             Size = new Size(874, 505);
-            Load += FormHome_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridViewContact).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBoxPP).EndInit();
             ResumeLayout(false);
@@ -117,5 +137,6 @@
         private DataGridView dataGridViewContact;
         private Label lblUser;
         private FontAwesome.Sharp.IconPictureBox pictureBoxPP;
+        private FontAwesome.Sharp.IconButton btnStartListening;
     }
 }

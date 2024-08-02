@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,7 +17,7 @@ namespace TelegramBot.Forms
     {
         private string commandsFilePath = @"Commands/commands.json";
         private Dictionary<string, string> commandsDictionary = new Dictionary<string, string>();
-        private static readonly string Token = "7479958953:AAEmY5KqoOKwNF6Z2ofog-aypSxME5NeIKk";
+        private static string Token = string.Empty;
         private TelegramBotClient Bot;
         public FormHome()
         {
@@ -24,12 +25,51 @@ namespace TelegramBot.Forms
             InitializeDataGridView();
         }
 
-        private void FormHome_Load(object sender, EventArgs e)
+        public void RefreshToken()
         {
-            Bot = new TelegramBotClient(Token);
-            LoadCommandsFromFile();
-            Bot.OnMessage += BotClient_OnMessage;
-            Bot.StartReceiving();
+            try
+            {
+                if (File.Exists(@"Commands/config.ini"))
+                {
+                    string fileContent = File.ReadAllText(@"Commands/config.ini");
+                    if (fileContent.StartsWith("botToken="))
+                    {
+                        Token = fileContent.Substring("botToken=".Length);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while refreshing the token: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            base.Show();
+        }
+
+        private void LoadTokenFromFile()
+        {
+            try
+            {
+                if (File.Exists(@"Commands/config.ini"))
+                {
+                    string fileContent = File.ReadAllText(@"Commands/config.ini");
+                    if (fileContent.StartsWith("botToken="))
+                    {
+                        Token = fileContent.Substring("botToken=".Length);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please go to the configuration settings and enter a token.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please go to the configuration settings and enter a token.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while loading the token: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void LoadCommandsFromFile()
@@ -173,9 +213,15 @@ namespace TelegramBot.Forms
             }
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void btnStartListening_Click(object sender, EventArgs e)
         {
-            Bot.StopReceiving();
+            LoadTokenFromFile();
+            Bot = new TelegramBotClient(Token);
+            LoadCommandsFromFile();
+            btnStartListening.Text = "Restart";
+            btnStartListening.IconChar = FontAwesome.Sharp.IconChar.SyncAlt;
+            Bot.OnMessage += BotClient_OnMessage;
+            Bot.StartReceiving();
         }
     }
 }
