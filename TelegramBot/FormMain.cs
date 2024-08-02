@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using TelegramBot.Forms;
+using System.Diagnostics;
 
 namespace TelegramBot
 {
@@ -84,7 +85,8 @@ namespace TelegramBot
 
         private void btnSettings_Click(object sender, EventArgs e)
         {
-            UserControl childForm = new Forms.FormHome();
+            UserControl childForm = new Forms.FormSettings();
+            OpenChildForm(childForm);
             leftBorderBtn.Height = btnSettings.Height;
             leftBorderBtn.Top = btnSettings.Top;
             leftBorderBtn.Left = btnSettings.Left;
@@ -110,7 +112,7 @@ namespace TelegramBot
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Hide();
         }
 
         private void btnCommands_Leave(object sender, EventArgs e)
@@ -143,6 +145,49 @@ namespace TelegramBot
             leftBorderBtn.Left = btnConfig.Left;
             leftBorderBtn.Visible = true;
             btnConfig.BackColor = Color.FromArgb(46, 51, 73);
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "https://github.com/talhatunc",
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while trying to open the URL: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = "https://github.com/talhatunc",
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while trying to open the URL: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

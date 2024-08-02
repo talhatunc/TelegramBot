@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             panelNavMenu = new Panel();
             btnConfig = new FontAwesome.Sharp.IconButton();
             btnCommands = new FontAwesome.Sharp.IconButton();
@@ -38,9 +40,14 @@
             panelScreen = new Panel();
             panelTitle = new Panel();
             btnExit = new FontAwesome.Sharp.IconButton();
+            notfiyIcon = new NotifyIcon(components);
+            contextMenuStrip1 = new ContextMenuStrip(components);
+            aboutToolStripMenuItem = new ToolStripMenuItem();
+            exitToolStripMenuItem = new ToolStripMenuItem();
             panelNavMenu.SuspendLayout();
             panel2.SuspendLayout();
             panelTitle.SuspendLayout();
+            contextMenuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // panelNavMenu
@@ -68,6 +75,7 @@
             btnConfig.IconColor = Color.FromArgb(0, 126, 249);
             btnConfig.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnConfig.IconSize = 36;
+            btnConfig.ImageAlign = ContentAlignment.MiddleRight;
             btnConfig.Location = new Point(0, 140);
             btnConfig.Name = "btnConfig";
             btnConfig.Size = new Size(186, 45);
@@ -90,6 +98,7 @@
             btnCommands.IconColor = Color.FromArgb(0, 126, 249);
             btnCommands.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnCommands.IconSize = 36;
+            btnCommands.ImageAlign = ContentAlignment.MiddleRight;
             btnCommands.Location = new Point(0, 95);
             btnCommands.Name = "btnCommands";
             btnCommands.Size = new Size(186, 45);
@@ -112,6 +121,7 @@
             btnSettings.IconColor = Color.FromArgb(0, 126, 249);
             btnSettings.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnSettings.IconSize = 36;
+            btnSettings.ImageAlign = ContentAlignment.MiddleRight;
             btnSettings.Location = new Point(0, 493);
             btnSettings.Name = "btnSettings";
             btnSettings.Size = new Size(186, 45);
@@ -134,6 +144,7 @@
             btnHome.IconColor = Color.FromArgb(0, 126, 249);
             btnHome.IconFont = FontAwesome.Sharp.IconFont.Auto;
             btnHome.IconSize = 36;
+            btnHome.ImageAlign = ContentAlignment.MiddleRight;
             btnHome.Location = new Point(0, 50);
             btnHome.Name = "btnHome";
             btnHome.Size = new Size(186, 45);
@@ -157,6 +168,7 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.Cursor = Cursors.Hand;
             label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label1.ForeColor = Color.FromArgb(0, 126, 249);
             label1.Location = new Point(29, 18);
@@ -164,6 +176,7 @@
             label1.Size = new Size(127, 15);
             label1.TabIndex = 0;
             label1.Text = "github.com/talhatunc";
+            label1.Click += label1_Click;
             // 
             // panelScreen
             // 
@@ -199,6 +212,36 @@
             btnExit.UseVisualStyleBackColor = true;
             btnExit.Click += btnExit_Click;
             // 
+            // notfiyIcon
+            // 
+            notfiyIcon.ContextMenuStrip = contextMenuStrip1;
+            notfiyIcon.Icon = (Icon)resources.GetObject("notfiyIcon.Icon");
+            notfiyIcon.Text = "TelegramBot";
+            notfiyIcon.Visible = true;
+            notfiyIcon.MouseDoubleClick += notifyIcon1_MouseDoubleClick;
+            // 
+            // contextMenuStrip1
+            // 
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { aboutToolStripMenuItem, exitToolStripMenuItem });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new Size(108, 48);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            aboutToolStripMenuItem.Image = (Image)resources.GetObject("aboutToolStripMenuItem.Image");
+            aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            aboutToolStripMenuItem.Size = new Size(107, 22);
+            aboutToolStripMenuItem.Text = "About";
+            aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
+            // 
+            // exitToolStripMenuItem
+            // 
+            exitToolStripMenuItem.Image = (Image)resources.GetObject("exitToolStripMenuItem.Image");
+            exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            exitToolStripMenuItem.Size = new Size(107, 22);
+            exitToolStripMenuItem.Text = "Exit";
+            exitToolStripMenuItem.Click += exitToolStripMenuItem_Click;
+            // 
             // FormMain
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -208,14 +251,16 @@
             Controls.Add(panelScreen);
             Controls.Add(panelTitle);
             Controls.Add(panelNavMenu);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "FormMain";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "FormMain";
+            Text = "TelegramBOT";
             Load += FormMain_Load;
             panelNavMenu.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             panelTitle.ResumeLayout(false);
+            contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -231,5 +276,9 @@
         private FontAwesome.Sharp.IconButton btnExit;
         private FontAwesome.Sharp.IconButton btnConfig;
         private FontAwesome.Sharp.IconButton btnCommands;
+        private NotifyIcon notfiyIcon;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem exitToolStripMenuItem;
+        private ToolStripMenuItem aboutToolStripMenuItem;
     }
 }

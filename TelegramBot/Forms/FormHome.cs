@@ -23,6 +23,15 @@ namespace TelegramBot.Forms
         {
             InitializeComponent();
             InitializeDataGridView();
+            if (LoadTokenFromFile())
+            {
+                Bot = new TelegramBotClient(Token);
+                LoadCommandsFromFile();
+                btnStartListening.Text = "Restart";
+                btnStartListening.IconChar = FontAwesome.Sharp.IconChar.SyncAlt;
+                Bot.OnMessage += BotClient_OnMessage;
+                Bot.StartReceiving();
+            }
         }
 
         public void RefreshToken()
@@ -45,7 +54,7 @@ namespace TelegramBot.Forms
             base.Show();
         }
 
-        private void LoadTokenFromFile()
+        private bool LoadTokenFromFile()
         {
             try
             {
@@ -55,20 +64,24 @@ namespace TelegramBot.Forms
                     if (fileContent.StartsWith("botToken="))
                     {
                         Token = fileContent.Substring("botToken=".Length);
+                        return true;
                     }
                     else
                     {
                         MessageBox.Show("Please go to the configuration settings and enter a token.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
                     }
                 }
                 else
                 {
                     MessageBox.Show("Please go to the configuration settings and enter a token.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"An error occurred while loading the token: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
         }
 
@@ -215,6 +228,7 @@ namespace TelegramBot.Forms
 
         private void btnStartListening_Click(object sender, EventArgs e)
         {
+            Bot.StopReceiving();
             LoadTokenFromFile();
             Bot = new TelegramBotClient(Token);
             LoadCommandsFromFile();
